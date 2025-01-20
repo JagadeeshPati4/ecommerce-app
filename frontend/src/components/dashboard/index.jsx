@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { Outlet } from 'react-router-dom';
 import { extendTheme, styled } from '@mui/material/styles';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -6,14 +7,18 @@ import StoreIcon from '@mui/icons-material/Store';
 import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import Grid from '@mui/material/Grid2';
+import CloudCircleIcon from '@mui/icons-material/CloudCircle';
 import { AppProvider } from '@toolpad/core/AppProvider';
-import { DashboardLayout } from '@toolpad/core/DashboardLayout';
+import { DashboardLayout,ThemeSwitcher } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Box } from '@mui/material';
-
+import shoppingBagLogoDesign from '../../assets/shopping-bag-logo-design.jpg';
+import { CardMedia,Stack,Typography,Chip,Tooltip,IconButton,TextField     } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import SearchIcon from '@mui/icons-material/Search';
 // Navigation Configuration
 const NAVIGATION = [
+ 
   { kind: 'header', title: 'Shop Management' },
   {
     segment: 'Products',
@@ -47,6 +52,8 @@ const NAVIGATION = [
 
 // Custom Theme
 const demoTheme = extendTheme({
+ 
+  
   colorSchemes: { light: true, dark: true },
   colorSchemeSelector: 'class',
   breakpoints: {
@@ -60,6 +67,70 @@ const demoTheme = extendTheme({
   },
 });
 
+function ToolbarActionsSearch() {
+  return (
+    <Stack direction="row">
+      <Tooltip title="Search" enterDelay={1000}>
+        <div>
+          <IconButton
+            type="button"
+            aria-label="search"
+            sx={{
+              display: { xs: 'inline', md: 'none' },
+            }}
+          >
+            <SearchIcon />
+          </IconButton>
+        </div>
+      </Tooltip>
+      <TextField
+        label="Search"
+        variant="outlined"
+        size="small"
+        slotProps={{
+          input: {
+            endAdornment: (
+              <IconButton type="button" aria-label="search" size="small">
+                <SearchIcon />
+              </IconButton>
+            ),
+            sx: { pr: 0.5 },
+          },
+        }}
+        sx={{ display: { xs: 'none', md: 'inline-block' }, mr: 1 }}
+      />
+      <ThemeSwitcher />
+    </Stack>
+  );
+}
+
+function SidebarFooter({ mini }) {
+  return (
+    <Typography
+      variant="caption"
+      sx={{ m: 1, whiteSpace: 'nowrap', overflow: 'hidden' }}
+    >
+      {mini ? '© MUI' : `© ${new Date().getFullYear()} Made with love by MUI`}
+    </Typography>
+  );
+}
+
+SidebarFooter.propTypes = {
+  mini: PropTypes.bool.isRequired,
+};
+
+function CustomAppTitle() {
+  return (
+    <Stack direction="row" alignItems="center" spacing={2}>
+      <CloudCircleIcon fontSize="large" color="primary" />
+      <Typography variant="h6">My App</Typography>
+      <Chip size="small" label="BETA" color="info" />
+      <Tooltip title="Connected to production">
+        <CheckCircleIcon color="success" fontSize="small" />
+      </Tooltip>
+    </Stack>
+  );
+}
 
 
 
@@ -83,6 +154,11 @@ export default function ECommerceDashboard(props) {
   return (
     <AppProvider
       navigation={NAVIGATION}
+      branding={{
+        logo: <CardMedia  component="img"
+        image={shoppingBagLogoDesign} alt="Shoping logo" />,
+        title: 'Shopping',
+      }}
       router={{
         navigate: (path) => navigate(path),
         pathname: location.pathname,
@@ -91,7 +167,11 @@ export default function ECommerceDashboard(props) {
       theme={demoTheme}
       window={demoWindow}
     >
-      <DashboardLayout >
+      <DashboardLayout  slots={{
+          appTitle: CustomAppTitle,
+          toolbarActions: ToolbarActionsSearch,
+          sidebarFooter: SidebarFooter,
+        }}>
         <PageContainer  sx={{scrollbarWidth: "none"}}>
           <Outlet />
         </PageContainer>
@@ -99,7 +179,6 @@ export default function ECommerceDashboard(props) {
     </AppProvider>
   );
 }
-
 
 export const DefualtDashboard= () =>{
   return (

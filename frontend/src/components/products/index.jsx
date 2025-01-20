@@ -62,7 +62,7 @@ const ProductsPage = () => {
                   component="img"
                   image={product.image}
                   alt={product.title}
-                  sx={{ height: 300,width:'100%', objectFit: "contain",display: "block"}}
+                  sx={{ height: 300,width:'100%', objectFit: "fill",display: "block"}}
                 />
                 <CardContent sx={{display: 'flex',
                 flexDirection: 'column',
@@ -79,8 +79,8 @@ const ProductsPage = () => {
                     color="text.secondary" 
                     sx={{ marginBottom: 1 }}
                   >
-                    {product.description.length > 100 ? 
-                      `${product.description.substring(0, 100)}...` : 
+                    {product.description.length > 30 ? 
+                      `${product.description.substring(0, 30)}...` : 
                       product.description
                     }
                   </Typography>
