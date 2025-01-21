@@ -7,14 +7,12 @@ import StoreIcon from '@mui/icons-material/Store';
 import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import Grid from '@mui/material/Grid2';
-import CloudCircleIcon from '@mui/icons-material/CloudCircle';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout,ThemeSwitcher } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import { useNavigate, useLocation } from 'react-router-dom';
 import shoppingBagLogoDesign from '../../assets/shopping-bag-logo-design.jpg';
-import { CardMedia,Stack,Typography,Chip,Tooltip,IconButton,TextField     } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { CardMedia,Stack,Typography,Tooltip,IconButton,TextField     } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 // Navigation Configuration
 const NAVIGATION = [
@@ -119,18 +117,6 @@ SidebarFooter.propTypes = {
   mini: PropTypes.bool.isRequired,
 };
 
-function CustomAppTitle() {
-  return (
-    <Stack direction="row" alignItems="center" spacing={2}>
-      <CloudCircleIcon fontSize="large" color="primary" />
-      <Typography variant="h6">My App</Typography>
-      <Chip size="small" label="BETA" color="info" />
-      <Tooltip title="Connected to production">
-        <CheckCircleIcon color="success" fontSize="small" />
-      </Tooltip>
-    </Stack>
-  );
-}
 
 
 
@@ -147,7 +133,30 @@ export default function ECommerceDashboard(props) {
   const navigate = useNavigate();
   const location = useLocation();
   // const router = useDemoRouter('/');
+  const [session, setSession] = React.useState({
+    user: {
+      name: 'Bharat Kashyap',
+      email: 'bharatkashyap@outlook.com',
+      image: 'https://avatars.githubusercontent.com/u/19550456',
+    },
+  });
 
+  const authentication = React.useMemo(() => {
+    return {
+      signIn: () => {
+        setSession({
+          user: {
+            name: 'Bharat Kashyap',
+            email: 'bharatkashyap@outlook.com',
+            image: 'https://avatars.githubusercontent.com/u/19550456',
+          },
+        });
+      },
+      signOut: () => {
+        setSession(null);
+      },
+    };
+  }, []);
   // Mock window for demo purposes
   const demoWindow = window ? window() : undefined;
 
@@ -159,6 +168,8 @@ export default function ECommerceDashboard(props) {
         image={shoppingBagLogoDesign} alt="Shoping logo" />,
         title: 'Shopping',
       }}
+      session={session}
+      authentication={authentication}
       router={{
         navigate: (path) => navigate(path),
         pathname: location.pathname,
@@ -168,7 +179,6 @@ export default function ECommerceDashboard(props) {
       window={demoWindow}
     >
       <DashboardLayout  slots={{
-          appTitle: CustomAppTitle,
           toolbarActions: ToolbarActionsSearch,
           sidebarFooter: SidebarFooter,
         }}>

@@ -11,7 +11,7 @@ const ProductsPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("https://fakestoreapi.com/products");
+        const response = await axios.get("http://127.0.0.1:8000/Products/products/");
         setProducts(response.data);
       } catch (error) {
         setError("Failed to load products.");
@@ -72,15 +72,22 @@ const ProductsPage = () => {
                     gutterBottom 
                     sx={{ fontWeight: 'bold', fontSize: '1rem' }}
                   >
-                    {product.title}
+                    {product.brand}
+                  </Typography>
+                  <Typography 
+                    variant="h6" 
+                    gutterBottom 
+                    sx={{ fontWeight: 'bold', fontSize: '1rem' }}
+                  >
+                    {product.name}
                   </Typography>
                   <Typography 
                     variant="body2" 
                     color="text.secondary" 
                     sx={{ marginBottom: 1 }}
                   >
-                    {product.description.length > 30 ? 
-                      `${product.description.substring(0, 30)}...` : 
+                    {product.description.length > 50 ? 
+                      `${product.description.substring(0, 50)}...` : 
                       product.description
                     }
                   </Typography>

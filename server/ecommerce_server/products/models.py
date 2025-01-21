@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+import requests
+from django.core.files.base import ContentFile
+
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
@@ -58,11 +61,18 @@ class Product(models.Model):
     brand = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='products_images/', null=True, blank=True)
     stock = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     supplier = models.ForeignKey('Supplier', on_delete=models.SET_NULL, null=True, blank=True)
+
+    def save_image_from_url(self, url):
+        response = requests.get(url)
+        if response.status_code == 200:
+            file_name = url.split('/')[-1]
+            self.image.save(file_name, ContentFile(response.content), save=False)
 
     def __str__(self):
         return self.name
