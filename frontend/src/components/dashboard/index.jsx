@@ -11,7 +11,7 @@ import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout,ThemeSwitcher } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import { useNavigate, useLocation } from 'react-router-dom';
-import shoppingBagLogoDesign from '../../assets/shopping-bag-logo-design.jpg';
+import shoppingBagLogoDesign from '../../assets/shopping-bag-logo-design.png';
 import { CardMedia,Stack,Typography,Tooltip,IconButton,TextField     } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 // Navigation Configuration
