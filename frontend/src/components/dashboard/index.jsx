@@ -165,8 +165,8 @@ export default function ECommerceDashboard(props) {
       navigation={NAVIGATION}
       branding={{
         logo: <CardMedia  component="img"
-        image={shoppingBagLogoDesign} alt="Shoping logo" />,
-        title: 'Shopping',
+        image={shoppingBagLogoDesign} alt="Shoping logo" sx={{objectFit:'fill'}} />,
+        title: 'E-Shopping',
       }}
       session={session}
       authentication={authentication}
